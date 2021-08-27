@@ -1,8 +1,28 @@
-﻿using System;
+﻿using ApplicationCore.Interfaces.IRepositories;
+using ApplicationCore.Interfaces.ISecurity;
+using Infrastructure.Data;
+using Infrastructure.Data.Repositories;
+using Infrastructure.Security;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Infrastructure
 {
-    public class DependencyInjection
+    public static class DependencyInjection
     {
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.AddDbContext<AppDbContext>(options =>
+                options.UseSqlServer(
+                    configuration.GetConnectionString("DefaultConnection"),
+                    b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
+
+            services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepository<>));
+            services.AddScoped<ITokenClaimsService, JwtService>();
+
+            return services;
+        }
     }
 }
