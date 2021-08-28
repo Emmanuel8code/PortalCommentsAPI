@@ -10,7 +10,7 @@ namespace ApplicationCore.MappingExtensions
 {
     public static class UserMappingExtensions
     {
-        public static User MapUserRegisterToUser(this UserRegisterDto userRegisterDto)
+        public static User MapUserRegisterToUser(this UserRegisterDto userRegisterDto, int portalId)
         {
             if (userRegisterDto == null)
             {
@@ -25,7 +25,7 @@ namespace ApplicationCore.MappingExtensions
                 BirthDate = userRegisterDto.BirthDate,
                 Email = userRegisterDto.Email,
                 Password = userRegisterDto.Password,
-                PortalId = userRegisterDto.PortalId,
+                PortalId = portalId,
                 RoleId = userRegisterDto.RoleId
             };
         }

@@ -23,19 +23,19 @@ namespace ApplicationCore.Services
             _portalService = portalService;
             _roleService = roleService;
         }
-        public async Task AddUserAsync(UserRegisterDto userRegister)
+        public async Task AddUserAsync(UserRegisterDto userRegister, int portalId)
         {
-            if (!(_portalService.PortalExists(userRegister.PortalId)))
+            if (!(_portalService.PortalExists(portalId)))
             {
-                throw new ArgumentException("Portal does not exist");
+                throw new ArgumentException("Portal Id Invalid");
             }
 
-            if (!(_roleService.RoleExists(userRegister.RoleId)))
+            if (!(_roleService.RoleExists(userRegister.RoleId)) || userRegister.RoleId == 1)
             {
-                throw new ArgumentException("Role does not exist");
+                throw new ArgumentException("Role Id invalid");
             }
 
-            bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(userRegister.PortalId);
+            bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(portalId);
             if (IsLegalAgeRequired)
             {
                 if (!(ageControl(userRegister.BirthDate)))
@@ -44,7 +44,7 @@ namespace ApplicationCore.Services
                 }
             }
 
-            User user = userRegister.MapUserRegisterToUser();
+            User user = userRegister.MapUserRegisterToUser(portalId);
 
             await _userRepository.AddAsync(user);
         }

@@ -33,9 +33,6 @@ namespace ApplicationCore.DTOs.Auth
         [Required(ErrorMessage = "Birthdate is required")]
         public DateTime BirthDate { get; set; }
 
-        [Required(ErrorMessage = "Portal ID is required")]
-        public int PortalId { get; set; }
-
         [Required(ErrorMessage = "Role ID is required")]
         public int RoleId { get; set; }
 
