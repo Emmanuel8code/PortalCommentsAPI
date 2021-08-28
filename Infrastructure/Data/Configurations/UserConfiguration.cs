@@ -50,7 +50,7 @@ namespace Infrastructure.Data.Configurations
                 .WithMany()
                 .HasForeignKey(e => e.PortalId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade); ;
+                .OnDelete(DeleteBehavior.NoAction); ;
 
             builder.HasOne(e => e.Role)
                 .WithMany()

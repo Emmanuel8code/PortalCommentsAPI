@@ -8,6 +8,6 @@ namespace ApplicationCore.Interfaces.ISecurity
 {
     public interface ITokenClaimsService
     {
-        Task<string> GetTokenAsync(int userId);
+        Task<string> GetTokenAsync(int userId, string key);
     }
 }
