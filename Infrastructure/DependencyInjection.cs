@@ -23,6 +23,8 @@ namespace Infrastructure
                     b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepository<>));
+
+            services.AddScoped<IPasswordService, PasswordService>();
             services.AddScoped<ITokenClaimsService, JwtService>();
 
             services.AddAuthentication(x =>
