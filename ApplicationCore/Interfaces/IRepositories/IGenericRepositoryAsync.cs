@@ -15,5 +15,6 @@ namespace ApplicationCore.Interfaces.IRepositories
         Task UpdateAsync(T entity);
         Task DeleteAsync(T entity);
         Task<int> CountAsync();
+        bool EntityExists(int id);
     }
 }

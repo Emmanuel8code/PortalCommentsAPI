@@ -1,4 +1,6 @@
-﻿using ApplicationCore.Interfaces.IServices;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces.IRepositories;
+using ApplicationCore.Interfaces.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,6 +11,12 @@ namespace ApplicationCore.Services
 {
     public class PortalService : IPortalService
     {
+        private readonly IGenericRepositoryAsync<Portal> _portalRepository;
+        public PortalService(IGenericRepositoryAsync<Portal> portalRepository)
+        {
+            _portalRepository = portalRepository;
+        }
+
         public Task<bool> IsPortalLegalAgeRequired(int PortalId)
         {
             throw new NotImplementedException();
@@ -16,7 +24,7 @@ namespace ApplicationCore.Services
 
         public bool PortalExists(int PortalId)
         {
-            throw new NotImplementedException();
+            return _portalRepository.EntityExists(PortalId);
         }
     }
 }

@@ -52,5 +52,10 @@ namespace Infrastructure.Data.Repositories
             _dbContext.Entry(entity).State = EntityState.Modified;
             await _dbContext.SaveChangesAsync();
         }
+
+        public bool EntityExists(int id)
+        {
+            return _dbContext.Set<T>().Any(x => x.Id == id);
+        }
     }
 }

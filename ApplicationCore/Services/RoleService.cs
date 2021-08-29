@@ -1,4 +1,6 @@
-﻿using ApplicationCore.Interfaces.IServices;
+﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces.IRepositories;
+using ApplicationCore.Interfaces.IServices;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +11,14 @@ namespace ApplicationCore.Services
 {
     public class RoleService : IRoleService
     {
+        private readonly IGenericRepositoryAsync<Role> _roleRepository;
+        public RoleService(IGenericRepositoryAsync<Role> roleRepository)
+        {
+            _roleRepository = roleRepository;
+        }
         public bool RoleExists(int RoleId)
         {
-            throw new NotImplementedException();
+            return _roleRepository.EntityExists(RoleId);
         }
     }
 }

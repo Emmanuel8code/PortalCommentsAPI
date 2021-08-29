@@ -29,5 +29,26 @@ namespace ApplicationCore.MappingExtensions
                 RoleId = userRegisterDto.RoleId
             };
         }
+
+        public static UserLoginResponseDto MapUserToUserLoginResponse(this User user)
+        {
+            if (user == null)
+            {
+                return null;
+            }
+
+            return new UserLoginResponseDto()
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                NickName = user.NickName,
+                BirthDate = user.BirthDate,
+                Email = user.Email,
+                PortalId = user.PortalId,
+                RoleId = user.RoleId,
+                IsLegalAge = user.IsLegalAge
+            };
+        }
     }
 }

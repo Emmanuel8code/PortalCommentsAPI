@@ -8,6 +8,6 @@ namespace ApplicationCore.Interfaces.ISecurity
 {
     public interface IPasswordService
     {
-        //Agregar método para hashear la contraseña
+        string Hash(string password);
     }
 }

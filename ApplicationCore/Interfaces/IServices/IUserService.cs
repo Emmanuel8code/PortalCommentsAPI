@@ -10,7 +10,8 @@ namespace ApplicationCore.Interfaces.IServices
 {
     public interface IUserService
     {
-        Task AddUserAsync(UserRegisterDto userRegisterDto, int portalId);
+        Task RegisterUserAsync(UserRegisterDto userRegisterDto, int portalId);
+        Task<UserLoginResponseDto> Login(UserLoginDto userLogin, int portalId);
         Task<User> GetUserById(int UserId);
     }
 }

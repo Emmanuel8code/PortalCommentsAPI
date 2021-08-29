@@ -34,7 +34,7 @@ namespace WebAPI.Controllers
         {
             try
             {
-                await _userService.AddUserAsync(userRegisterDto, id);
+                await _userService.RegisterUserAsync(userRegisterDto, id);
                 return Ok();
             }
             catch (ArgumentException e)
@@ -42,6 +42,26 @@ namespace WebAPI.Controllers
                 return BadRequest(e.Message);
             }
             catch (AgeNotAllowedException e)
+            {
+                return Unauthorized(e.Message);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        // POST api/<PortalsController>/{id}/login
+        [HttpPost("{id}/login")]
+        public async Task<IActionResult> UserLogin(int id, [FromBody] UserLoginDto userLoginDto)
+        {
+            try
+            {
+                var user = await _userService.Login(userLoginDto, id);
+                var token = await _tokenService.GetTokenAsync(user.Id, _configuration.GetValue<string>("SecretKey"));
+                return Ok(token);
+            }
+            catch (InvalidOperationException e)
             {
                 return Unauthorized(e.Message);
             }
