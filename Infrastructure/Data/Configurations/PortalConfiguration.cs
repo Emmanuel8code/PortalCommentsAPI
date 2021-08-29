@@ -27,6 +27,16 @@ namespace Infrastructure.Data.Configurations
 
             builder.Property(e => e.CreatedAt)
                 .IsRequired();
+
+            DataSeeding(builder);
+        }
+
+        private static void DataSeeding(EntityTypeBuilder<Portal> builder)
+        {
+            builder.HasData(
+                new Portal { Id = 1, Name = "Faceback", IsLegalAgeRequired = true, CreatedAt = DateTime.Now },
+                new Portal { Id = 2, Name = "Instagum", IsLegalAgeRequired = true, CreatedAt = DateTime.Now }
+                );
         }
     }
 }

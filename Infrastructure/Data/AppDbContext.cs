@@ -27,11 +27,11 @@ namespace Infrastructure.Data
             base.OnModelCreating(modelBuilder);
 
             //Write Fluent API configurations here
-            new CommentConfiguration().Configure(modelBuilder.Entity<Comment>());
-            new PostConfiguration().Configure(modelBuilder.Entity<Post>());
             new PortalConfiguration().Configure(modelBuilder.Entity<Portal>());
-            new UserConfiguration().Configure(modelBuilder.Entity<User>());
             new RoleConfiguration().Configure(modelBuilder.Entity<Role>());
+            new UserConfiguration().Configure(modelBuilder.Entity<User>());
+            new PostConfiguration().Configure(modelBuilder.Entity<Post>());
+            new CommentConfiguration().Configure(modelBuilder.Entity<Comment>());
         }
     }
 }

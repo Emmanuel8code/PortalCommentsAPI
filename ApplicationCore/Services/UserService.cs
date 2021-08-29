@@ -30,6 +30,7 @@ namespace ApplicationCore.Services
             _roleService = roleService;
             _passwordService = passwordService;
         }
+        
         public async Task RegisterUserAsync(UserRegisterDto userRegister, int portalId)
         {
             if (!(_portalService.PortalExists(portalId)))
@@ -42,14 +43,15 @@ namespace ApplicationCore.Services
                 throw new ArgumentException("Role Id invalid");
             }
 
-            bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(portalId);
-            if (IsLegalAgeRequired)
-            {
-                if (!(ageControl(userRegister.BirthDate)))
-                {
-                    throw new AgeNotAllowedException("Age not allowed");
-                }
-            }
+            //TERMINAR ESTE METODO
+            //bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(portalId);
+            //if (IsLegalAgeRequired)
+            //{
+            //    if (!(ageControl(userRegister.BirthDate)))
+            //    {
+            //        throw new AgeNotAllowedException("Age not allowed");
+            //    }
+            //}
 
             userRegister.Password = _passwordService.Hash(userRegister.Password);
 

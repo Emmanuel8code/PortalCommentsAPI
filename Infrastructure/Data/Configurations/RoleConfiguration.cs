@@ -21,6 +21,16 @@ namespace Infrastructure.Data.Configurations
 
             builder.HasIndex(e => e.Name)
                 .IsUnique();
+
+            DataSeeding(builder);
+        }
+
+        private static void DataSeeding(EntityTypeBuilder<Role> builder)
+        {
+            builder.HasData(
+                new Role { Id = 1, Name = "Admin" },
+                new Role { Id = 2, Name = "Registered" }
+                );
         }
     }
 }

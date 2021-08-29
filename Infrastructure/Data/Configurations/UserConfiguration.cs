@@ -44,6 +44,8 @@ namespace Infrastructure.Data.Configurations
             builder.Property(e => e.CreatedAt)
                 .IsRequired();
 
+            builder.Property(e => e.UpdateAt);
+
             builder.Property(e => e.DeletedAt);
 
             builder.HasOne(e => e.Portal)
