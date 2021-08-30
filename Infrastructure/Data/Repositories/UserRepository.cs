@@ -17,7 +17,7 @@ namespace Infrastructure.Data.Repositories
         public async Task<User> GetUserByEmailPassword(string Email, string Password, int PortalId)
         {
             return await _dbContext.Users
-                .Where(x => x.Email == Email && x.Password == Password && x.PortalId == PortalId)
+                .Where(x => x.Email == Email && x.Password == Password && x.PortalId == PortalId && x.DeletedAt == null)
                 .FirstOrDefaultAsync();
         }
     }
