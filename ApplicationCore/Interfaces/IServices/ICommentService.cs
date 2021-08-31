@@ -10,7 +10,7 @@ namespace ApplicationCore.Interfaces.IServices
 {
     public interface ICommentService
     {
-        Task<CommentResponseDto> AddCommentAsync(int userId, int portalId, int postId, CommentRequestDto commentRequestDto);
+        Task<CommentResponseDto> AddCommentAsync(int userId, int postId, CommentRequestDto commentRequestDto);
         Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByPostAsync(int postId);
     }
 }

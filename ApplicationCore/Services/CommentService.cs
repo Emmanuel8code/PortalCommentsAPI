@@ -22,14 +22,9 @@ namespace ApplicationCore.Services
             _postService = postService;
         }
 
-        public async Task<CommentResponseDto> AddCommentAsync(int userId, int portalId, int postId, CommentRequestDto commentRequestDto)
+        public async Task<CommentResponseDto> AddCommentAsync(int userId, int postId, CommentRequestDto commentRequestDto)
         {
-            if (!(_postService.PostBelongsToPortal(postId, portalId))) //Ojo, creo que esta demas el postexist si comparo el postbelongs ya me daria falso. A parte ver filtros para llevar este codigo afuera en el controlador
-            {
-                throw new ArgumentException("Post Id Invalid");
-            }
-
-            var comment = commentRequestDto.MapCommentReqToComment(postId);
+            var comment = commentRequestDto.MapCommentReqToComment(postId, userId);
 
             await _commentRepository.AddAsync(comment);
 
@@ -38,11 +33,6 @@ namespace ApplicationCore.Services
 
         public async Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByPostAsync(int postId)
         {
-            //if (!(_postService.PostBelongsToPortal(postId, portalId))) //Ojo, creo que esta demas el postexist si comparo el postbelongs ya me daria falso. A parte ver filtros para llevar este codigo afuera en el controlador
-            //{
-            //    throw new ArgumentException("Post Id Invalid");
-            //}
-
             var commentsList = await _commentRepository.GetCommentsByPost(postId);
             List<CommentResponseDto> commentsResponseList = new();
             foreach (var comment in commentsList)

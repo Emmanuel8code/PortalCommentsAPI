@@ -54,14 +54,14 @@ namespace WebAPI.Controllers
 
         // POST api/Posts/{id}/Comments
         [Authorize(Policy = "Registered")]
+        [ServiceFilter(typeof(PortalHasPostActionFilter))]
         [HttpPost("/Posts/{postId}/Comments")]
         public async Task<IActionResult> Post(int postId, [FromBody] CommentRequestDto commentsRequestDto)
         {
             try
             {
-                int portalId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "PortalId")?.Value);
                 int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
-                var commentResponse = await _commentService.AddCommentAsync(userId, portalId, postId, commentsRequestDto);
+                var commentResponse = await _commentService.AddCommentAsync(userId, postId, commentsRequestDto);
                 
                 return CreatedAtAction(nameof(GetComment), new { id = commentResponse.Id}, commentResponse);
             }
@@ -69,10 +69,10 @@ namespace WebAPI.Controllers
             {
                 return BadRequest(e.Message);
             }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
+            //catch (Exception e)
+            //{
+            //    return StatusCode(500, e.Message);
+            //}
         }
 
         //// PUT api/<CommentsController>/5

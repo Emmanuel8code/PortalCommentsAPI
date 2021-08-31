@@ -10,7 +10,7 @@ namespace ApplicationCore.MappingExtensions
 {
     public static class CommentMappingExtensions
     {
-        public static Comment MapCommentReqToComment(this CommentRequestDto commentRequestDto, int postId)
+        public static Comment MapCommentReqToComment(this CommentRequestDto commentRequestDto, int postId, int userId)
         {
             if(commentRequestDto == null)
             {
@@ -21,7 +21,9 @@ namespace ApplicationCore.MappingExtensions
             {
                 Title = commentRequestDto.Title,
                 Content = commentRequestDto.Content,
-                PostId = postId
+                PostId = postId,
+                UserId = userId
+
             };
         }
 
