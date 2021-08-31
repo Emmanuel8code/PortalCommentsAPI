@@ -10,5 +10,6 @@ namespace ApplicationCore.Interfaces.IRepositories
     public interface ICommentRepository : IGenericRepositoryAsync<Comment>
     {
         Task<IReadOnlyList<Comment>> GetCommentsByPost(int postId);
+        Task<IReadOnlyList<Comment>> GetCommentsByWord(string search);
     }
 }

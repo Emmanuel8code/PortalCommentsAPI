@@ -12,7 +12,7 @@ using WebAPI.Filters;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
     {
@@ -30,7 +30,6 @@ namespace WebAPI.Controllers
         {
             try
             {
-                //int portalId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "PortalId")?.Value);
                 var commentsReponseList = await _commentService.GetCommentsByPostAsync(postId);
                 return Ok(commentsReponseList);
             }
@@ -44,14 +43,27 @@ namespace WebAPI.Controllers
             }
         }
 
-        // GET api/<CommentsController>/5
-        [HttpGet("{id}")]
-        public string GetComment(int id)
+        // GET: /Comments?search=word
+        //[Authorize(Policy = "Admin")]
+        [HttpGet()]
+        public async Task<IActionResult> GetCommentsByWord([FromQuery] string search)
         {
-            return "value";
+            try
+            {
+                var commentsReponseList = await _commentService.GetCommentsByWordAsync(search);
+                return Ok(commentsReponseList);
+            }
+            catch (ArgumentException e)
+            {
+                return BadRequest(e.Message);
+            }
+            //catch (Exception e)
+            //{
+            //    return StatusCode(500, e.Message);
+            //}
         }
 
-
+       
         // POST api/Posts/{id}/Comments
         [Authorize(Policy = "Registered")]
         [ServiceFilter(typeof(PortalHasPostActionFilter))]
@@ -73,6 +85,13 @@ namespace WebAPI.Controllers
             //{
             //    return StatusCode(500, e.Message);
             //}
+        }
+
+        // GET api/<CommentsController>/5
+        [HttpGet("{id}")]
+        public string GetComment(int id)
+        {
+            return "value";
         }
 
         //// PUT api/<CommentsController>/5

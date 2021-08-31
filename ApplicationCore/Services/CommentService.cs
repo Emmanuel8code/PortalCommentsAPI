@@ -42,5 +42,17 @@ namespace ApplicationCore.Services
 
             return commentsResponseList;
         }
+
+        public async Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search)
+        {
+            var commentsList = await _commentRepository.GetCommentsByWord(search);
+            List<CommentResponseDto> commentsResponseList = new();
+            foreach (var comment in commentsList)
+            {
+                commentsResponseList.Add(comment.MapCommentToCommentResp());
+            }
+
+            return commentsResponseList;
+        }
     }
 }

@@ -22,5 +22,13 @@ namespace Infrastructure.Data.Repositories
                 .OrderBy(c => c.CreatedAt)
                 .ToListAsync(); 
         }
+
+        public async Task<IReadOnlyList<Comment>> GetCommentsByWord(string search)
+        {
+            return await (from c in _dbContext.Comments
+                            where c.DeletedAt == null && c.Content.Contains(search)
+                            orderby c.CreatedAt, c.UserId, c.PostId
+                            select c).ToListAsync();
+        }
     }
 }
