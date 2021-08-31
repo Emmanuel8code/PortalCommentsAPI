@@ -24,6 +24,8 @@ namespace Infrastructure
 
             services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepository<>));
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IPostRepository, PostRepository>();
+            services.AddScoped<ICommentRepository, CommentRepository>();
 
             services.AddScoped<IPasswordService, PasswordService>();
             services.AddScoped<ITokenClaimsService, JwtService>();

@@ -9,10 +9,12 @@ namespace ApplicationCore
     {
         public static IServiceCollection AddApplicationCore(this IServiceCollection services)
         {
-            services.AddScoped<IUserService, UserService>();
             services.AddScoped<IPortalService, PortalService>();
             services.AddScoped<IRoleService, RoleService>();
-
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IPostService, PostService>();
+            services.AddScoped<ICommentService, CommentService>();
+            
             return services;
         }
     }

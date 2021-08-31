@@ -8,7 +8,7 @@ namespace ApplicationCore.Interfaces.IServices
 {
     public interface IPortalService
     {
-        Task<bool> IsPortalLegalAgeRequired(int PortalId);
-        bool PortalExists(int PortalId);
+        Task<bool> IsPortalLegalAgeRequired(int portalId);
+        bool PortalExists(int portalId);
     }
 }

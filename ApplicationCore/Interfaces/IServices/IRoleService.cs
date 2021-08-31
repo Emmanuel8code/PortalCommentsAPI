@@ -8,6 +8,6 @@ namespace ApplicationCore.Interfaces.IServices
 {
     public interface IRoleService
     {
-        bool RoleExists(int RoleId);
+        bool RoleExists(int roleId);
     }
 }

@@ -29,12 +29,12 @@ namespace WebAPI.Controllers
 
 
         // POST api/<PortalsController>/{id}/register
-        [HttpPost("{id}/register")]
-        public async Task<IActionResult> UserRegister(int id, [FromBody] UserRegisterDto userRegisterDto)
+        [HttpPost("{portalId}/register")]
+        public async Task<IActionResult> UserRegister(int portalId, [FromBody] UserRegisterDto userRegisterDto)
         {
             try
             {
-                await _userService.RegisterUserAsync(userRegisterDto, id);
+                await _userService.RegisterUserAsync(userRegisterDto, portalId);
                 return Ok();
             }
             catch (ArgumentException e)
@@ -52,12 +52,12 @@ namespace WebAPI.Controllers
         }
 
         // POST api/<PortalsController>/{id}/login
-        [HttpPost("{id}/login")]
-        public async Task<IActionResult> UserLogin(int id, [FromBody] UserLoginDto userLoginDto)
+        [HttpPost("{portalId}/login")]
+        public async Task<IActionResult> UserLogin(int portalId, [FromBody] UserLoginDto userLoginDto)
         {
             try
             {
-                var user = await _userService.Login(userLoginDto, id);
+                var user = await _userService.Login(userLoginDto, portalId);
                 var token = await _tokenService.GetTokenAsync(user.Id, _configuration.GetValue<string>("SecretKey"));
                 return Ok(token);
             }

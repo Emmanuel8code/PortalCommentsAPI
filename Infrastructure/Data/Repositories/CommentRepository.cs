@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.IRepositories;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,14 @@ namespace Infrastructure.Data.Repositories
     {
         public CommentRepository(AppDbContext dbContext) : base(dbContext)
         {
+        }
+
+        public async Task<IReadOnlyList<Comment>> GetCommentsByPost(int postId)
+        {
+            return await _dbContext.Comments
+                .Where(c => c.PostId == postId && c.DeletedAt == null)
+                .OrderBy(c => c.CreatedAt)
+                .ToListAsync(); 
         }
     }
 }

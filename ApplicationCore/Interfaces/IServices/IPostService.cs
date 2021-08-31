@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces.IServices
 {
-    interface IPostService
+    public interface IPostService
     {
+        bool PostExists(int postId);
+        bool PostBelongsToPortal(int postId, int portalId);
     }
 }

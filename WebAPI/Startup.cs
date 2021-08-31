@@ -13,6 +13,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebAPI.Filters;
 
 namespace WebAPI
 {
@@ -30,6 +31,8 @@ namespace WebAPI
         {
             services.AddApplicationCore();
             services.AddInfrastructure(Configuration);
+
+            services.AddScoped<PortalHasPostActionFilter>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

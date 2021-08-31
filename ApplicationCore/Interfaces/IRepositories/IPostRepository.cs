@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace ApplicationCore.Interfaces.IRepositories
 {
-    public interface ICommentRepository : IGenericRepositoryAsync<Comment>
+    public interface IPostRepository : IGenericRepositoryAsync<Post>
     {
-        Task<IReadOnlyList<Comment>> GetCommentsByPost(int postId);
+        bool PostHasPortalId(int postId, int portalId);
     }
 }

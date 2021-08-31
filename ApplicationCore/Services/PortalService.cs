@@ -17,14 +17,14 @@ namespace ApplicationCore.Services
             _portalRepository = portalRepository;
         }
 
-        public Task<bool> IsPortalLegalAgeRequired(int PortalId)
+        public Task<bool> IsPortalLegalAgeRequired(int portalId)
         {
             throw new NotImplementedException();
         }
 
-        public bool PortalExists(int PortalId)
+        public bool PortalExists(int portalId)
         {
-            return _portalRepository.EntityExists(PortalId);
+            return _portalRepository.EntityExists(portalId);
         }
     }
 }
