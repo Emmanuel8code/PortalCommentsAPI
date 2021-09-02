@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>WebAPI</name>
+    </assembly>
+    <members>
+        <member name="M:WebAPI.Controllers.CommentsController.GetCommentsByPost(System.Int32)">
+            <summary>
+            Get Comments from a Post. Authorize: any registered User. 
+            </summary>
+            <param name="postId">A integer number.</param>
+        </member>
+        <member name="M:WebAPI.Controllers.CommentsController.GetCommentsByWord(System.String)">
+            <summary>
+            Get Comments that have the search word in their content. Authorize: only Admin. 
+            </summary>
+            <param name="search">A string word.</param>
+        </member>
+        <member name="M:WebAPI.Controllers.CommentsController.Post(System.Int32,ApplicationCore.DTOs.CommentDtos.CommentRequestDto)">
+            <summary>
+            Create a Comment on a Post. Authorize: any registered User. 
+            </summary>
+            <param name="postId">A intenger number.</param>
+            <param name="commentRequestDto">A type CommentRequestDto object.</param>
+        </member>
+        <member name="M:WebAPI.Controllers.CommentsController.Delete(System.Int32)">
+            <summary>
+            Delete a Comment on a Portal. Authorize: only Admin. 
+            </summary>
+            <param name="commentId">A intenger number.</param>
+        </member>
+    </members>
+</doc>

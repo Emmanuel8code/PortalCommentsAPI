@@ -31,6 +31,10 @@ namespace Infrastructure.Data.Repositories
             {
                 queryable = queryable.Where(x => x.DeletedAt == null && x.Content.Contains(search));
             }
+            else
+            {
+                queryable = queryable.Where(x => x.DeletedAt == null);
+            }
 
             return await queryable.OrderBy(c => c.CreatedAt).ThenBy(c => c.UserId).ThenBy(c => c.PostId)
                 .ToListAsync();

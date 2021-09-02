@@ -1,4 +1,5 @@
 ﻿using ApplicationCore.DTOs.CommentDtos;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Interfaces.IServices;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,15 @@ namespace WebAPI.Controllers
             _commentService = commentService;
         }
 
-        // GET: api/Posts/{id}/Comments
+        
+        // GET: /Posts/{id}/Comments
+        /// <summary>
+        /// Get Comments from a Post. Authorize: any registered User. 
+        /// </summary>
+        /// <param name="postId">A integer number.</param>
+        [ProducesResponseType(typeof(IEnumerable<CommentResponseDto>), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(500)]
         [Authorize(Policy = "Registered")]
         [ServiceFilter(typeof(PortalHasPostActionFilter))]
         [HttpGet("/Posts/{postId}/Comments")]
@@ -35,7 +44,7 @@ namespace WebAPI.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return this.Problem(e.Message, statusCode: 400);
             }
             catch (Exception e)
             {
@@ -43,7 +52,15 @@ namespace WebAPI.Controllers
             }
         }
 
+        
         // GET: /Comments?search=word
+        /// <summary>
+        /// Get Comments that have the search word in their content. Authorize: only Admin. 
+        /// </summary>
+        /// <param name="search">A string word.</param>
+        [ProducesResponseType(typeof(IEnumerable<CommentResponseDto>), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(500)]
         [Authorize(Policy = "Admin")]
         [HttpGet()]
         public async Task<IActionResult> GetCommentsByWord([FromQuery] string search)
@@ -55,7 +72,7 @@ namespace WebAPI.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return this.Problem(e.Message, statusCode: 400);
             }
             //catch (Exception e)
             //{
@@ -63,23 +80,31 @@ namespace WebAPI.Controllers
             //}
         }
 
-       
-        // POST api/Posts/{id}/Comments
+
+        // POST /Posts/{id}/Comments
+        /// <summary>
+        /// Create a Comment on a Post. Authorize: any registered User. 
+        /// </summary>
+        /// <param name="postId">A intenger number.</param>
+        /// <param name="commentRequestDto">A type CommentRequestDto object.</param>
+        [ProducesResponseType(typeof(CommentResponseDto), 201)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(500)]
         [Authorize(Policy = "Registered")]
         [ServiceFilter(typeof(PortalHasPostActionFilter))]
         [HttpPost("/Posts/{postId}/Comments")]
-        public async Task<IActionResult> Post(int postId, [FromBody] CommentRequestDto commentsRequestDto)
+        public async Task<IActionResult> Post(int postId, [FromBody] CommentRequestDto commentRequestDto)
         {
             try
             {
                 int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
-                var commentResponse = await _commentService.AddCommentAsync(userId, postId, commentsRequestDto);
+                var commentResponse = await _commentService.AddCommentAsync(userId, postId, commentRequestDto);
                 
                 return CreatedAtAction(nameof(GetComment), new { id = commentResponse.Id}, commentResponse);
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return this.Problem(e.Message, statusCode: 400);
             }
             //catch (Exception e)
             //{
@@ -87,7 +112,7 @@ namespace WebAPI.Controllers
             //}
         }
 
-        // GET api/<CommentsController>/5
+        // GET /<CommentsController>/5
         [Authorize(Policy = "Registered")]
         [HttpGet("{id}")]
         public string GetComment(int id)
@@ -98,24 +123,47 @@ namespace WebAPI.Controllers
         // PATCH /<CommentsController>/5
         [Authorize(Policy = "Registered")]
         [HttpPatch("{id}")]
-        public void CommentPatch(int id, [FromBody] string content)
+        public async Task<IActionResult> CommentPatch(int id, [FromBody] string content)
         {
             try
             {
                 int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
-                //completar
+                await _commentService.UpdateCommentContent(id, content, userId);
+                return NoContent();
             }
-            catch (Exception)
+            catch (EntityNotFoundException e)
             {
-
-                throw;
+                return this.Problem(e.Message, statusCode: 404);
+            }
+            catch (ArgumentException e)
+            {
+                return this.Problem(e.Message, statusCode: 400);
             }
         }
 
-        //// DELETE api/<CommentsController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
+        
+        // DELETE /<CommentsController>/5
+        /// <summary>
+        /// Delete a Comment on a Portal. Authorize: only Admin. 
+        /// </summary>
+        /// <param name="commentId">A intenger number.</param>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(500)]
+        [Authorize(Policy = "Admin")]
+        [ServiceFilter(typeof(PortalHasCommentActionFilter))]
+        [HttpDelete("{commentId}")]
+        public async Task<IActionResult> Delete(int commentId)
+        {
+            try
+            {
+                await _commentService.SoftDeleteComment(commentId);
+                return NoContent();
+            }
+            catch (EntityNotFoundException e)
+            {
+                return this.Problem(e.Message, statusCode : 404);
+            }
+        }
     }
 }

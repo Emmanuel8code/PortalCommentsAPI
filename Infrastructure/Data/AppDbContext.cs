@@ -48,6 +48,11 @@ namespace Infrastructure.Data
                     case EntityState.Modified:
                         entry.Entity.UpdateAt = DateTime.Now;
                         break;
+
+                    case EntityState.Deleted:
+                        entry.State = EntityState.Unchanged;
+                        entry.Entity.DeletedAt = DateTime.Now;
+                        break;
                 }
             }
 

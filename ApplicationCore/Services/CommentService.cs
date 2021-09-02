@@ -1,5 +1,6 @@
 ﻿using ApplicationCore.DTOs.CommentDtos;
 using ApplicationCore.Entities;
+using ApplicationCore.Exceptions;
 using ApplicationCore.Interfaces.IRepositories;
 using ApplicationCore.Interfaces.IServices;
 using ApplicationCore.MappingExtensions;
@@ -41,6 +42,37 @@ namespace ApplicationCore.Services
         {
             var commentsList = await _commentRepository.GetCommentsByWord(search);
             return commentsList.MapToCommentRespList();
+        }
+
+        public async Task UpdateCommentContent(int commentId, string content, int userId)
+        {
+            var comment = await _commentRepository.GetByIdAsync(commentId);
+            if(comment == null && (comment.UserId != userId))
+            {
+                throw new EntityNotFoundException("Comment not found");
+            }
+
+            if((DateTime.Now - comment.CreatedAt).TotalDays > 7)
+            {
+                throw new ArgumentException("Comment is not editable, days since it was created is greater more 7");
+            }
+
+            comment.Content = content;
+        
+            await _commentRepository.UpdateAsync(comment);
+        }
+
+        public async Task SoftDeleteComment(int commentId)
+        {
+            var comment = await _commentRepository.GetByIdAsync(commentId);
+            if (comment == null)
+            {
+                throw new EntityNotFoundException("Comment not found");
+            }
+
+            comment.DeletedAt = DateTime.Now;
+
+            await _commentRepository.DeleteAsync(comment);
         }
     }
 }
