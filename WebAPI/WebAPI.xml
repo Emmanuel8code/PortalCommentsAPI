@@ -23,11 +23,30 @@
             <param name="postId">A intenger number.</param>
             <param name="commentRequestDto">A type CommentRequestDto object.</param>
         </member>
+        <member name="M:WebAPI.Controllers.CommentsController.CommentPatch(System.Int32,System.String)">
+            <summary>
+            Update a content of a Comment. Authorize: any registered User. 
+            </summary>
+        </member>
         <member name="M:WebAPI.Controllers.CommentsController.Delete(System.Int32)">
             <summary>
             Delete a Comment on a Portal. Authorize: only Admin. 
             </summary>
             <param name="commentId">A intenger number.</param>
+        </member>
+        <member name="M:WebAPI.Controllers.PortalsController.UserRegister(System.Int32,ApplicationCore.DTOs.Auth.UserRegisterDto)">
+            <summary>
+            Register a User in the specified Portal. 
+            </summary>
+            <param name="portalId">A intenger number.</param>
+            <param name="userRegisterDto">A type of UserRegisterDto object.</param>
+        </member>
+        <member name="M:WebAPI.Controllers.PortalsController.UserLogin(System.Int32,ApplicationCore.DTOs.Auth.UserLoginDto)">
+            <summary>
+            Login a User in the specified Portal. 
+            </summary>
+            <param name="portalId">A intenger number.</param>
+            <param name="userLoginDto">A type of UserLoginDto object.</param>
         </member>
     </members>
 </doc>

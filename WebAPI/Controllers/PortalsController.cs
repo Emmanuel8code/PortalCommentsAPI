@@ -29,6 +29,15 @@ namespace WebAPI.Controllers
 
 
         // POST api/<PortalsController>/{id}/register
+        /// <summary>
+        /// Register a User in the specified Portal. 
+        /// </summary>
+        /// <param name="portalId">A intenger number.</param>
+        /// <param name="userRegisterDto">A type of UserRegisterDto object.</param>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(500)]
         [HttpPost("{portalId}/register")]
         public async Task<IActionResult> UserRegister(int portalId, [FromBody] UserRegisterDto userRegisterDto)
         {
@@ -39,11 +48,11 @@ namespace WebAPI.Controllers
             }
             catch (ArgumentException e)
             {
-                return BadRequest(e.Message);
+                return this.Problem(e.Message, statusCode: 400);
             }
             catch (AgeNotAllowedException e)
             {
-                return Unauthorized(e.Message);
+                return this.Problem(e.Message, statusCode: 401);
             }
             catch (Exception e)
             {
@@ -52,6 +61,15 @@ namespace WebAPI.Controllers
         }
 
         // POST api/<PortalsController>/{id}/login
+        /// <summary>
+        /// Login a User in the specified Portal. 
+        /// </summary>
+        /// <param name="portalId">A intenger number.</param>
+        /// <param name="userLoginDto">A type of UserLoginDto object.</param>
+        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(ProblemDetails), 400)]
+        [ProducesResponseType(typeof(ProblemDetails), 401)]
+        [ProducesResponseType(500)]
         [HttpPost("{portalId}/login")]
         public async Task<IActionResult> UserLogin(int portalId, [FromBody] UserLoginDto userLoginDto)
         {

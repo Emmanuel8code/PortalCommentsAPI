@@ -121,6 +121,12 @@ namespace WebAPI.Controllers
         }
 
         // PATCH /<CommentsController>/5
+        /// <summary>
+        /// Update a content of a Comment. Authorize: any registered User. 
+        /// </summary>
+        [ProducesResponseType(204)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ProducesResponseType(500)]
         [Authorize(Policy = "Registered")]
         [HttpPatch("{id}")]
         public async Task<IActionResult> CommentPatch(int id, [FromBody] string content)
