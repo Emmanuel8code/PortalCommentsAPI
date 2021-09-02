@@ -11,7 +11,7 @@ using WebAPI.Filters;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
-{
+{ 
     [Route("[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
@@ -44,7 +44,7 @@ namespace WebAPI.Controllers
         }
 
         // GET: /Comments?search=word
-        //[Authorize(Policy = "Admin")]
+        [Authorize(Policy = "Admin")]
         [HttpGet()]
         public async Task<IActionResult> GetCommentsByWord([FromQuery] string search)
         {
@@ -88,17 +88,29 @@ namespace WebAPI.Controllers
         }
 
         // GET api/<CommentsController>/5
+        [Authorize(Policy = "Registered")]
         [HttpGet("{id}")]
         public string GetComment(int id)
         {
             return "value";
         }
 
-        //// PUT api/<CommentsController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
+        // PATCH /<CommentsController>/5
+        [Authorize(Policy = "Registered")]
+        [HttpPatch("{id}")]
+        public void CommentPatch(int id, [FromBody] string content)
+        {
+            try
+            {
+                int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
+                //completar
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
 
         //// DELETE api/<CommentsController>/5
         //[HttpDelete("{id}")]

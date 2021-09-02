@@ -45,5 +45,21 @@ namespace ApplicationCore.MappingExtensions
                 UpdateAt = comment.UpdateAt
             };
         }
+
+        public static List<CommentResponseDto> MapToCommentRespList(this IReadOnlyCollection<Comment> commentsList)
+        {
+            if (commentsList == null)
+            {
+                return null;
+            }
+
+            List<CommentResponseDto> commentsResponseList = new();
+            foreach (var comment in commentsList)
+            {
+                commentsResponseList.Add(comment.MapCommentToCommentResp());
+            }
+
+            return commentsResponseList;
+        }
     }
 }

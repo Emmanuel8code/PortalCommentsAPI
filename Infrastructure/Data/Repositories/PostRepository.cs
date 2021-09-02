@@ -12,7 +12,6 @@ namespace Infrastructure.Data.Repositories
     {
         public PostRepository(AppDbContext dbContext) : base(dbContext)
         {
-
         }
         
         public bool PostHasPortalId(int postId, int portalId)

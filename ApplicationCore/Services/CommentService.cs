@@ -34,25 +34,13 @@ namespace ApplicationCore.Services
         public async Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByPostAsync(int postId)
         {
             var commentsList = await _commentRepository.GetCommentsByPost(postId);
-            List<CommentResponseDto> commentsResponseList = new();
-            foreach (var comment in commentsList)
-            {
-                commentsResponseList.Add(comment.MapCommentToCommentResp());
-            }
-
-            return commentsResponseList;
+            return commentsList.MapToCommentRespList();
         }
 
         public async Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search)
         {
             var commentsList = await _commentRepository.GetCommentsByWord(search);
-            List<CommentResponseDto> commentsResponseList = new();
-            foreach (var comment in commentsList)
-            {
-                commentsResponseList.Add(comment.MapCommentToCommentResp());
-            }
-
-            return commentsResponseList;
+            return commentsList.MapToCommentRespList();
         }
     }
 }

@@ -17,18 +17,23 @@ namespace Infrastructure.Data.Repositories
 
         public async Task<IReadOnlyList<Comment>> GetCommentsByPost(int postId)
         {
-            return await _dbContext.Comments
-                .Where(c => c.PostId == postId && c.DeletedAt == null)
-                .OrderBy(c => c.CreatedAt)
-                .ToListAsync(); 
+           return await (from c in _dbContext.Comments
+                          where c.PostId == postId && c.DeletedAt == null
+                          orderby c.CreatedAt
+                          select c).ToListAsync();
         }
 
         public async Task<IReadOnlyList<Comment>> GetCommentsByWord(string search)
         {
-            return await (from c in _dbContext.Comments
-                            where c.DeletedAt == null && c.Content.Contains(search)
-                            orderby c.CreatedAt, c.UserId, c.PostId
-                            select c).ToListAsync();
+            var queryable = _dbContext.Comments.AsQueryable();
+            
+            if(search != null)
+            {
+                queryable = queryable.Where(x => x.DeletedAt == null && x.Content.Contains(search));
+            }
+
+            return await queryable.OrderBy(c => c.CreatedAt).ThenBy(c => c.UserId).ThenBy(c => c.PostId)
+                .ToListAsync();
         }
     }
 }

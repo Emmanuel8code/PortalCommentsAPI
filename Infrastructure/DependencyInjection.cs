@@ -51,7 +51,7 @@ namespace Infrastructure
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("Admin", policy => policy.RequireClaim("RoleId", "1"));
-                options.AddPolicy("Registered", policy => policy.RequireClaim("RoleId", "2"));
+                options.AddPolicy("Registered", policy => policy.RequireClaim("RoleId", "1","2"));
             });
 
             return services;
