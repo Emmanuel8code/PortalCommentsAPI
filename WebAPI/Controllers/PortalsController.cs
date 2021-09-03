@@ -13,6 +13,8 @@ using System.Threading.Tasks;
 
 namespace WebAPI.Controllers
 {
+    [Produces("application/json")]
+    [ProducesResponseType(500)]
     [Route("[controller]")]
     [ApiController]
     public class PortalsController : ControllerBase
@@ -37,14 +39,14 @@ namespace WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ProblemDetails), 403)]
         [HttpPost("{portalId}/register")]
         public async Task<IActionResult> UserRegister(int portalId, [FromBody] UserRegisterDto userRegisterDto)
         {
             try
             {
                 await _userService.RegisterUserAsync(userRegisterDto, portalId);
-                return Ok();
+                return Ok("User registered");
             }
             catch (ArgumentException e)
             {
@@ -52,7 +54,7 @@ namespace WebAPI.Controllers
             }
             catch (AgeNotAllowedException e)
             {
-                return this.Problem(e.Message, statusCode: 401);
+                return this.Problem(e.Message, statusCode: 403);
             }
             catch (Exception e)
             {
@@ -69,7 +71,6 @@ namespace WebAPI.Controllers
         [ProducesResponseType(200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
-        [ProducesResponseType(500)]
         [HttpPost("{portalId}/login")]
         public async Task<IActionResult> UserLogin(int portalId, [FromBody] UserLoginDto userLoginDto)
         {

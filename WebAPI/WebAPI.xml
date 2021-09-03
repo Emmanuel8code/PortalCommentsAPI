@@ -23,10 +23,18 @@
             <param name="postId">A intenger number.</param>
             <param name="commentRequestDto">A type CommentRequestDto object.</param>
         </member>
+        <member name="M:WebAPI.Controllers.CommentsController.GetComment(System.Int32)">
+            <summary>
+            Get a Comment by Id. Authorize: any registered User. 
+            </summary>
+            <param name="commentId">A intenger number.</param>
+        </member>
         <member name="M:WebAPI.Controllers.CommentsController.CommentPatch(System.Int32,System.String)">
             <summary>
             Update a content of a Comment. Authorize: any registered User. 
             </summary>
+            <param name="commentId">A intenger number.</param>
+            <param name="content">A string.</param>
         </member>
         <member name="M:WebAPI.Controllers.CommentsController.Delete(System.Int32)">
             <summary>

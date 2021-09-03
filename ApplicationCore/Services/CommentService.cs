@@ -44,6 +44,17 @@ namespace ApplicationCore.Services
             return commentsList.MapToCommentRespList();
         }
 
+        public async Task<CommentResponseDto> GetCommentByIdAsync(int commentId)
+        {
+            var comment = await _commentRepository.GetCommentById(commentId);
+            if (comment == null)
+            {
+                throw new EntityNotFoundException("Comment not found");
+            }
+
+            return comment.MapCommentToCommentResp();
+        }
+
         public async Task UpdateCommentContent(int commentId, string content, int userId)
         {
             var comment = await _commentRepository.GetByIdAsync(commentId);
@@ -70,7 +81,7 @@ namespace ApplicationCore.Services
                 throw new EntityNotFoundException("Comment not found");
             }
 
-            comment.DeletedAt = DateTime.Now;
+            comment.DeletedAt = DateTime.Now; //FIJARSE QUE NO VA ESTA PARTE, ESTA EN EL DBCONTEXT
 
             await _commentRepository.DeleteAsync(comment);
         }

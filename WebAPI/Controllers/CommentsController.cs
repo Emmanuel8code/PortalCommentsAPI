@@ -12,7 +12,10 @@ using WebAPI.Filters;
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
 namespace WebAPI.Controllers
-{ 
+{
+    [Produces("application/json")]
+    [ProducesResponseType(401)]
+    [ProducesResponseType(500)]
     [Route("[controller]")]
     [ApiController]
     public class CommentsController : ControllerBase
@@ -31,7 +34,7 @@ namespace WebAPI.Controllers
         /// <param name="postId">A integer number.</param>
         [ProducesResponseType(typeof(IEnumerable<CommentResponseDto>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         [Authorize(Policy = "Registered")]
         [ServiceFilter(typeof(PortalHasPostActionFilter))]
         [HttpGet("/Posts/{postId}/Comments")]
@@ -60,7 +63,6 @@ namespace WebAPI.Controllers
         /// <param name="search">A string word.</param>
         [ProducesResponseType(typeof(IEnumerable<CommentResponseDto>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
-        [ProducesResponseType(500)]
         [Authorize(Policy = "Admin")]
         [HttpGet()]
         public async Task<IActionResult> GetCommentsByWord([FromQuery] string search)
@@ -89,7 +91,7 @@ namespace WebAPI.Controllers
         /// <param name="commentRequestDto">A type CommentRequestDto object.</param>
         [ProducesResponseType(typeof(CommentResponseDto), 201)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
-        [ProducesResponseType(500)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
         [Authorize(Policy = "Registered")]
         [ServiceFilter(typeof(PortalHasPostActionFilter))]
         [HttpPost("/Posts/{postId}/Comments")]
@@ -100,7 +102,7 @@ namespace WebAPI.Controllers
                 int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
                 var commentResponse = await _commentService.AddCommentAsync(userId, postId, commentRequestDto);
                 
-                return CreatedAtAction(nameof(GetComment), new { id = commentResponse.Id}, commentResponse);
+                return CreatedAtAction(nameof(GetComment), new { commentId = commentResponse.Id}, commentResponse);
             }
             catch (ArgumentException e)
             {
@@ -112,29 +114,47 @@ namespace WebAPI.Controllers
             //}
         }
 
+
         // GET /<CommentsController>/5
+        /// <summary>
+        /// Get a Comment by Id. Authorize: any registered User. 
+        /// </summary>
+        /// <param name="commentId">A intenger number.</param>
+        [ProducesResponseType(typeof(CommentResponseDto), 200)]
+        [ProducesResponseType(typeof(ProblemDetails), 404)]
+        [ServiceFilter(typeof(PortalHasCommentActionFilter))]
         [Authorize(Policy = "Registered")]
-        [HttpGet("{id}")]
-        public string GetComment(int id)
+        [HttpGet("{commentId}")]
+        public async Task<IActionResult> GetComment(int commentId)
         {
-            return "value";
+            try
+            {
+                var comment = await _commentService.GetCommentByIdAsync(commentId);
+                return Ok(comment);
+            }
+            catch (EntityNotFoundException e)
+            {
+                return this.Problem(e.Message, statusCode: 404);
+            }
         }
+
 
         // PATCH /<CommentsController>/5
         /// <summary>
         /// Update a content of a Comment. Authorize: any registered User. 
         /// </summary>
+        /// <param name="commentId">A intenger number.</param>
+        /// <param name="content">A string.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
-        [ProducesResponseType(500)]
         [Authorize(Policy = "Registered")]
-        [HttpPatch("{id}")]
-        public async Task<IActionResult> CommentPatch(int id, [FromBody] string content)
+        [HttpPatch("{commentId}")]
+        public async Task<IActionResult> CommentPatch(int commentId, [FromBody] string content)
         {
             try
             {
                 int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
-                await _commentService.UpdateCommentContent(id, content, userId);
+                await _commentService.UpdateCommentContent(commentId, content, userId);
                 return NoContent();
             }
             catch (EntityNotFoundException e)
@@ -155,7 +175,6 @@ namespace WebAPI.Controllers
         /// <param name="commentId">A intenger number.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
-        [ProducesResponseType(500)]
         [Authorize(Policy = "Admin")]
         [ServiceFilter(typeof(PortalHasCommentActionFilter))]
         [HttpDelete("{commentId}")]

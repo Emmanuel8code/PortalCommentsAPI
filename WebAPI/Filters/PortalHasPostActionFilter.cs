@@ -25,7 +25,9 @@ namespace WebAPI.Filters
 
             if (!(_postService.PostBelongsToPortal(postId, portalId)))
             {
-                context.Result = new NotFoundObjectResult(("Post was not found"));
+                //context.Result = new NotFoundObjectResult("Post was not found"); 
+                ControllerBase controller = context.Controller as ControllerBase;
+                context.Result = controller.Problem("Post was not found", statusCode : 404);
             }
         }
 

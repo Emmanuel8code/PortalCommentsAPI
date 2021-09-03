@@ -39,5 +39,12 @@ namespace Infrastructure.Data.Repositories
             return await queryable.OrderBy(c => c.CreatedAt).ThenBy(c => c.UserId).ThenBy(c => c.PostId)
                 .ToListAsync();
         }
+
+        public async Task<Comment> GetCommentById(int commentId)
+        {
+            return await (from c in _dbContext.Comments
+                          where c.Id == commentId && c.DeletedAt == null
+                          select c).FirstOrDefaultAsync();
+        }
     }
 }

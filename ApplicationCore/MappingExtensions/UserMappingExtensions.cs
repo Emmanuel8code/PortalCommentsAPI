@@ -43,7 +43,7 @@ namespace ApplicationCore.MappingExtensions
                 FirstName = user.FirstName,
                 LastName = user.LastName,
                 NickName = user.NickName,
-                BirthDate = user.BirthDate,
+                BirthDate = user.BirthDate.ToString("G"),
                 Email = user.Email,
                 PortalId = user.PortalId,
                 RoleId = user.RoleId,

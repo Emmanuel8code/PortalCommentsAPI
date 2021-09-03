@@ -11,5 +11,6 @@ namespace ApplicationCore.Interfaces.IRepositories
     {
         Task<IReadOnlyList<Comment>> GetCommentsByPost(int postId);
         Task<IReadOnlyList<Comment>> GetCommentsByWord(string search);
+        Task<Comment> GetCommentById(int commentId);
     }
 }

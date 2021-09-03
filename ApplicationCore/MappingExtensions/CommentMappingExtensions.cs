@@ -41,8 +41,8 @@ namespace ApplicationCore.MappingExtensions
                 Content = comment.Content,
                 PostId = comment.PostId,
                 UserId = comment.UserId,
-                CreatedAt = comment.CreatedAt,
-                UpdateAt = comment.UpdateAt
+                CreatedAt = comment.CreatedAt.ToString("G"),
+                UpdateAt = comment.UpdateAt?.ToString("G")
             };
         }
 

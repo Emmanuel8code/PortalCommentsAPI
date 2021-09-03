@@ -13,7 +13,7 @@ namespace ApplicationCore.DTOs.Auth
         public string LastName { get; set; }
         public string NickName { get; set; }
         public string Email { get; set; }
-        public DateTime BirthDate { get; set; }
+        public string BirthDate { get; set; }
         public int PortalId { get; set; }
         public int RoleId { get; set; }
         public bool IsLegalAge { get; set; }

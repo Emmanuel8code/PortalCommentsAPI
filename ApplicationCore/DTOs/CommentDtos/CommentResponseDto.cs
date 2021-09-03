@@ -13,7 +13,7 @@ namespace ApplicationCore.DTOs.CommentDtos
         public string Content { get; set; }
         public int UserId { get; set; }
         public int PostId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public DateTime? UpdateAt { get; set; }
+        public string CreatedAt { get; set; }
+        public string UpdateAt { get; set; }
     }
 }

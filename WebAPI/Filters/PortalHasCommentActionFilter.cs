@@ -53,6 +53,8 @@ namespace WebAPI.Filters
                 if (!(_postService.PostBelongsToPortal(comment.PostId, portalId)))
                 {
                     context.Result = new NotFoundObjectResult(("Comment was not found"));
+                    //ControllerBase controller = context.Controller as ControllerBase;
+                    //context.Result = controller.Problem("Comment was not found", statusCode: 404);
                 }
             }
             
