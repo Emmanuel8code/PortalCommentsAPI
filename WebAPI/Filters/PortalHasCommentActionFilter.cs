@@ -19,26 +19,6 @@ namespace WebAPI.Filters
             _commentRepository = commentRepository;
         }
 
-        //public void OnActionExecuting(ActionExecutingContext context)
-        //{
-        //    var portalIdClaim = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "PortalId")?.Value;
-        //    int portalId = int.Parse(portalIdClaim);
-
-        //    int commentId = (int)context.ActionArguments["commentId"];
-
-        //    var comment = await _commentRepository.GetByIdAsync(commentId);
-
-        //    if (!(_postService.PostBelongsToPortal(comment., portalId)))
-        //    {
-        //        context.Result = new NotFoundObjectResult(("Comment was not found"));
-        //    }
-        //}
-
-        public void OnActionExecuted(ActionExecutedContext context)
-        {
-            //throw new NotImplementedException();
-        }
-
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             var portalIdClaim = context.HttpContext.User.Claims.FirstOrDefault(c => c.Type == "PortalId")?.Value;
@@ -52,9 +32,10 @@ namespace WebAPI.Filters
             {
                 if (!(_postService.PostBelongsToPortal(comment.PostId, portalId)))
                 {
-                    context.Result = new NotFoundObjectResult(("Comment was not found"));
-                    //ControllerBase controller = context.Controller as ControllerBase;
-                    //context.Result = controller.Problem("Comment was not found", statusCode: 404);
+                    //context.Result = new NotFoundObjectResult(("Comment was not found"));
+                    ControllerBase controller = context.Controller as ControllerBase;
+                    context.Result = controller.Problem("Comment was not found", statusCode: 404);
+                    return;
                 }
             }
             

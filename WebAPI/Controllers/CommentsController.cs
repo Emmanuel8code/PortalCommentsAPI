@@ -69,7 +69,10 @@ namespace WebAPI.Controllers
         {
             try
             {
-                var commentsReponseList = await _commentService.GetCommentsByWordAsync(search);
+                var portalIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "PortalId")?.Value;
+                int portalId = int.Parse(portalIdClaim);
+
+                var commentsReponseList = await _commentService.GetCommentsByWordAsync(search, portalId);
                 return Ok(commentsReponseList);
             }
             catch (ArgumentException e)

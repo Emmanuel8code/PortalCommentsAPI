@@ -38,9 +38,9 @@ namespace ApplicationCore.Services
             return commentsList.MapToCommentRespList();
         }
 
-        public async Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search)
+        public async Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search, int portalId)
         {
-            var commentsList = await _commentRepository.GetCommentsByWord(search);
+            var commentsList = await _commentRepository.GetCommentsByWord(search, portalId);
             return commentsList.MapToCommentRespList();
         }
 

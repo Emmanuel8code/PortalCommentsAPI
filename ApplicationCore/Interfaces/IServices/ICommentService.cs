@@ -12,7 +12,7 @@ namespace ApplicationCore.Interfaces.IServices
     {
         Task<CommentResponseDto> AddCommentAsync(int userId, int postId, CommentRequestDto commentRequestDto);
         Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByPostAsync(int postId);
-        Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search);
+        Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search, int portalId);
         Task<CommentResponseDto> GetCommentByIdAsync(int commentId);
         Task UpdateCommentContent(int commentId, string content, int userId);
         Task SoftDeleteComment(int commentId);

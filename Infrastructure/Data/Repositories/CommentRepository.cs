@@ -23,17 +23,17 @@ namespace Infrastructure.Data.Repositories
                           select c).ToListAsync();
         }
 
-        public async Task<IReadOnlyList<Comment>> GetCommentsByWord(string search)
+        public async Task<IReadOnlyList<Comment>> GetCommentsByWord(string search, int portalId)
         {
             var queryable = _dbContext.Comments.AsQueryable();
             
             if(search != null)
             {
-                queryable = queryable.Where(x => x.DeletedAt == null && x.Content.Contains(search));
+                queryable = queryable.Where(x => x.DeletedAt == null && x.Content.Contains(search) && x.Post.PortalId == portalId);
             }
             else
             {
-                queryable = queryable.Where(x => x.DeletedAt == null);
+                queryable = queryable.Where(x => x.DeletedAt == null && x.Post.PortalId == portalId);
             }
 
             return await queryable.OrderBy(c => c.CreatedAt).ThenBy(c => c.UserId).ThenBy(c => c.PostId)
