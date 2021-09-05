@@ -12,6 +12,7 @@ namespace ApplicationCore.Interfaces.IServices
     {
         Task RegisterUserAsync(UserRegisterDto userRegisterDto, int portalId);
         Task<UserLoginResponseDto> Login(UserLoginDto userLogin, int portalId);
-        Task<User> GetUserById(int UserId);
+        Task<User> GetUserByIdAsync(int userId);
+        Task DeleteUser(int userId, int portalId, bool permanent = false);
     }
 }

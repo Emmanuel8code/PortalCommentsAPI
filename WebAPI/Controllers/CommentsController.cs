@@ -31,7 +31,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Get Comments from a Post. Authorize: any registered User. 
         /// </summary>
-        /// <param name="postId">A integer number.</param>
+        /// <param name="postId">A integer number that identifies a Post.</param>
         [ProducesResponseType(typeof(IEnumerable<CommentResponseDto>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Get Comments that have the search word in their content. Authorize: only Admin. 
         /// </summary>
-        /// <param name="search">A string word.</param>
+        /// <param name="search">A string word to search in contents of Comments.</param>
         [ProducesResponseType(typeof(IEnumerable<CommentResponseDto>), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [Authorize(Policy = "Admin")]
@@ -90,7 +90,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Create a Comment on a Post. Authorize: any registered User. 
         /// </summary>
-        /// <param name="postId">A intenger number.</param>
+        /// <param name="postId">A intenger number that identifies a Post.</param>
         /// <param name="commentRequestDto">A type CommentRequestDto object.</param>
         [ProducesResponseType(typeof(CommentResponseDto), 201)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
@@ -122,7 +122,7 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Get a Comment by Id. Authorize: any registered User. 
         /// </summary>
-        /// <param name="commentId">A intenger number.</param>
+        /// <param name="commentId">A intenger number that identifies a Comment.</param>
         [ProducesResponseType(typeof(CommentResponseDto), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [ServiceFilter(typeof(PortalHasCommentActionFilter))]
@@ -146,8 +146,8 @@ namespace WebAPI.Controllers
         /// <summary>
         /// Update a content of a Comment. Authorize: any registered User. 
         /// </summary>
-        /// <param name="commentId">A intenger number.</param>
-        /// <param name="content">A string.</param>
+        /// <param name="commentId">A intenger number that identifies a Comment.</param>
+        /// <param name="content">A string to replace the content in the comment.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [Authorize(Policy = "Registered")]
@@ -170,12 +170,12 @@ namespace WebAPI.Controllers
             }
         }
 
-        
+
         // DELETE /<CommentsController>/5
         /// <summary>
         /// Delete a Comment on a Portal. Authorize: only Admin. 
         /// </summary>
-        /// <param name="commentId">A intenger number.</param>
+        /// <param name="commentId">A intenger number that identifies a Comment.</param>
         [ProducesResponseType(204)]
         [ProducesResponseType(typeof(ProblemDetails), 404)]
         [Authorize(Policy = "Admin")]

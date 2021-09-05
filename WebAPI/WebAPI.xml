@@ -8,53 +8,60 @@
             <summary>
             Get Comments from a Post. Authorize: any registered User. 
             </summary>
-            <param name="postId">A integer number.</param>
+            <param name="postId">A integer number that identifies a Post.</param>
         </member>
         <member name="M:WebAPI.Controllers.CommentsController.GetCommentsByWord(System.String)">
             <summary>
             Get Comments that have the search word in their content. Authorize: only Admin. 
             </summary>
-            <param name="search">A string word.</param>
+            <param name="search">A string word to search in contents of Comments.</param>
         </member>
         <member name="M:WebAPI.Controllers.CommentsController.Post(System.Int32,ApplicationCore.DTOs.CommentDtos.CommentRequestDto)">
             <summary>
             Create a Comment on a Post. Authorize: any registered User. 
             </summary>
-            <param name="postId">A intenger number.</param>
+            <param name="postId">A intenger number that identifies a Post.</param>
             <param name="commentRequestDto">A type CommentRequestDto object.</param>
         </member>
         <member name="M:WebAPI.Controllers.CommentsController.GetComment(System.Int32)">
             <summary>
             Get a Comment by Id. Authorize: any registered User. 
             </summary>
-            <param name="commentId">A intenger number.</param>
+            <param name="commentId">A intenger number that identifies a Comment.</param>
         </member>
         <member name="M:WebAPI.Controllers.CommentsController.CommentPatch(System.Int32,System.String)">
             <summary>
             Update a content of a Comment. Authorize: any registered User. 
             </summary>
-            <param name="commentId">A intenger number.</param>
-            <param name="content">A string.</param>
+            <param name="commentId">A intenger number that identifies a Comment.</param>
+            <param name="content">A string to replace the content in the comment.</param>
         </member>
         <member name="M:WebAPI.Controllers.CommentsController.Delete(System.Int32)">
             <summary>
             Delete a Comment on a Portal. Authorize: only Admin. 
             </summary>
-            <param name="commentId">A intenger number.</param>
+            <param name="commentId">A intenger number that identifies a Comment.</param>
         </member>
-        <member name="M:WebAPI.Controllers.PortalsController.UserRegister(System.Int32,ApplicationCore.DTOs.Auth.UserRegisterDto)">
+        <member name="M:WebAPI.Controllers.UsersController.UserRegister(System.Int32,ApplicationCore.DTOs.Auth.UserRegisterDto)">
             <summary>
             Register a User in the specified Portal. 
             </summary>
-            <param name="portalId">A intenger number.</param>
+            <param name="portalId">A intenger number that identifies a Portal.</param>
             <param name="userRegisterDto">A type of UserRegisterDto object.</param>
         </member>
-        <member name="M:WebAPI.Controllers.PortalsController.UserLogin(System.Int32,ApplicationCore.DTOs.Auth.UserLoginDto)">
+        <member name="M:WebAPI.Controllers.UsersController.UserLogin(System.Int32,ApplicationCore.DTOs.Auth.UserLoginDto)">
             <summary>
             Login a User in the specified Portal. 
             </summary>
-            <param name="portalId">A intenger number.</param>
+            <param name="portalId">A intenger number that identifies a Portal.</param>
             <param name="userLoginDto">A type of UserLoginDto object.</param>
+        </member>
+        <member name="M:WebAPI.Controllers.UsersController.Delete(System.Int32,System.Boolean)">
+            <summary>
+            Disable a user in a Portal. Authorize: only Admin. 
+            </summary>
+            <param name="userId">A intenger number that identifies a User.</param>
+            <param name="permanent">A boolean to confirm hard delete.</param>
         </member>
     </members>
 </doc>

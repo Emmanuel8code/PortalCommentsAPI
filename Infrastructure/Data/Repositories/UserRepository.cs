@@ -21,5 +21,43 @@ namespace Infrastructure.Data.Repositories
                 .Where(x => x.Email == Email && x.Password == Password && x.PortalId == PortalId && x.DeletedAt == null)
                 .FirstOrDefaultAsync();
         }
+
+        public async Task<User> GetUserById(int userId)
+        {
+            return await (from c in _dbContext.Users
+                          where c.Id == userId && c.DeletedAt == null
+                          select c).FirstOrDefaultAsync();
+        }
+
+        public async Task<User> GetUserByPortalId(int userId, int portalId, bool deleteNull = true)
+        {
+            var queryable = _dbContext.Users.AsQueryable();
+
+            queryable = queryable.Where(u => u.Id == userId && u.PortalId == portalId);
+            
+            if (deleteNull)
+            {
+                queryable = queryable.Where(u => u.DeletedAt == null);
+            }
+
+            return await queryable.FirstOrDefaultAsync();
+        }
+
+        public async Task SoftDelete(User user)
+        {
+            user.DeletedAt = DateTime.Now;
+            _dbContext.Entry(user).State = EntityState.Modified;
+            await _dbContext.SaveChangesAsync();
+        }
+        
+        public bool NickNameExists(string nickname, int portalId)
+        {
+            return _dbContext.Users.Any(u => u.NickName == nickname && u.PortalId == portalId);
+        }
+
+        public bool EmailExists(string email, int portalId)
+        {
+            return _dbContext.Users.Any(u => u.Email == email && u.PortalId == portalId);
+        }
     }
 }

@@ -23,7 +23,7 @@ namespace Infrastructure.Security
         {
             var tokenHandler = new JwtSecurityTokenHandler();
             var secretKey = Encoding.ASCII.GetBytes(key);
-            var user = await _userService.GetUserById(userId);
+            var user = await _userService.GetUserByIdAsync(userId);
             
             var claims = new List<Claim> { new Claim("UserId", user.Id.ToString()) };
             claims.Add(new Claim("RoleId", user.RoleId.ToString()));

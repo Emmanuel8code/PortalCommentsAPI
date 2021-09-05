@@ -12,5 +12,6 @@ namespace ApplicationCore.Interfaces.IRepositories
         Task<IReadOnlyList<Comment>> GetCommentsByPost(int postId);
         Task<IReadOnlyList<Comment>> GetCommentsByWord(string search, int portalId);
         Task<Comment> GetCommentById(int commentId);
+        Task SoftDelete(Comment comment);
     }
 }

@@ -49,7 +49,7 @@ namespace ApplicationCore.Services
             var comment = await _commentRepository.GetCommentById(commentId);
             if (comment == null)
             {
-                throw new EntityNotFoundException("Comment not found");
+                throw new EntityNotFoundException("Comment was not found");
             }
 
             return comment.MapCommentToCommentResp();
@@ -57,10 +57,10 @@ namespace ApplicationCore.Services
 
         public async Task UpdateCommentContent(int commentId, string content, int userId)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentId);
-            if(comment == null && (comment.UserId != userId))
+            var comment = await _commentRepository.GetCommentById(commentId);
+            if(comment == null || (comment.UserId != userId))
             {
-                throw new EntityNotFoundException("Comment not found");
+                throw new EntityNotFoundException("Comment was not found");
             }
 
             if((DateTime.Now - comment.CreatedAt).TotalDays > 7)
@@ -75,15 +75,15 @@ namespace ApplicationCore.Services
 
         public async Task SoftDeleteComment(int commentId)
         {
-            var comment = await _commentRepository.GetByIdAsync(commentId);
+            var comment = await _commentRepository.GetCommentById(commentId);
             if (comment == null)
             {
-                throw new EntityNotFoundException("Comment not found");
+                throw new EntityNotFoundException("Comment was not  found");
             }
 
-            comment.DeletedAt = DateTime.Now; //FIJARSE QUE NO VA ESTA PARTE, ESTA EN EL DBCONTEXT
+            //comment.DeletedAt = DateTime.Now; //FIJARSE QUE NO VA ESTA PARTE, ESTA EN EL DBCONTEXT
 
-            await _commentRepository.DeleteAsync(comment);
+            await _commentRepository.SoftDelete(comment);
         }
     }
 }

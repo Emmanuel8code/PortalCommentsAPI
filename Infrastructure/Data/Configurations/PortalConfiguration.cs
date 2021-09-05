@@ -35,7 +35,7 @@ namespace Infrastructure.Data.Configurations
         {
             builder.HasData(
                 new Portal { Id = 1, Name = "Faceback", IsLegalAgeRequired = true, CreatedAt = DateTime.Now },
-                new Portal { Id = 2, Name = "Instagum", IsLegalAgeRequired = true, CreatedAt = DateTime.Now }
+                new Portal { Id = 2, Name = "Instaclan", IsLegalAgeRequired = true, CreatedAt = DateTime.Now }
                 );
         }
     }

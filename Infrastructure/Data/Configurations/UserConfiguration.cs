@@ -1,4 +1,6 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Interfaces.ISecurity;
+using Infrastructure.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using System;
@@ -62,6 +64,47 @@ namespace Infrastructure.Data.Configurations
 
             builder.HasIndex(e => new { e.NickName, e.Email, e.PortalId })
                 .IsUnique();
+
+            DataSeeding(builder);
+        }
+
+        private static void DataSeeding(EntityTypeBuilder<User> builder)
+        {
+            IPasswordService passwordService = new PasswordService();
+            string[] names = { "admin01", "Alvaro", "Andrea", "random01", "admin02", "Maya", "Emmanuel", "random02" };
+            int portalId = 1;
+            int roleId;
+            for (int i = 0; i < 8; i++)
+            {
+                if (i > 3) 
+                    portalId = 2;
+                
+                if (i == 0 || i == 4)
+                {
+                    roleId = 1;
+                }
+                else
+                {
+                    roleId = 2;
+                }
+               
+                builder.HasData(
+                    new User
+                    {
+                        Id = i + 1,
+                        FirstName = names[i],
+                        LastName = $"del portal{portalId}",
+                        BirthDate = DateTime.ParseExact("19990501T00:00:00Z", "yyyyMMddTHH:mm:ssZ",
+                                    System.Globalization.CultureInfo.InvariantCulture),
+                        IsLegalAge = true,
+                        Email = $"{names[i]}@example.com",
+                        Password = passwordService.Hash("1234"),
+                        NickName = names[i],
+                        CreatedAt = DateTime.Now,
+                        PortalId = portalId,
+                        RoleId = roleId
+                    });
+            }
         }
     }
 }

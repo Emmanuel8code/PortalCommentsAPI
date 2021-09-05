@@ -43,11 +43,13 @@ namespace ApplicationCore.Services
                 throw new ArgumentException("Role Id invalid");
             }
 
+            ValidateEmailAndNickName(userRegister.Email, userRegister.NickName, portalId);
+
             //TERMINAR ESTE METODO
             //bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(portalId);
             //if (IsLegalAgeRequired)
             //{
-            //    if (!(ageControl(userRegister.BirthDate)))
+            //    if (!(ValidateAge(userRegister.BirthDate)))
             //    {
             //        throw new AgeNotAllowedException("Age not allowed");
             //    }
@@ -75,15 +77,53 @@ namespace ApplicationCore.Services
             return userResponse;
         }
 
-        public async Task<User> GetUserById(int UserId)
+        public async Task<User> GetUserByIdAsync(int userId)
         {
-            return await _userRepository.GetByIdAsync(UserId);
+            return await _userRepository.GetUserById(userId);
         }
 
-        public bool ageControl(DateTime birthDate)
+        public async Task DeleteUser(int userId, int portalId, bool permanent = false)
+        {
+            User user;
+            if (permanent)
+            {
+                user = await _userRepository.GetUserByPortalId(userId, portalId, false);
+                if (user != null)
+                {
+                    await _userRepository.DeleteAsync(user);
+                    return;
+                }
+            }
+            else
+            {
+                user = await _userRepository.GetUserByPortalId(userId, portalId);
+                if (user != null)
+                {
+                    await _userRepository.SoftDelete(user);
+                    return;
+                }
+            }
+
+            throw new EntityNotFoundException("User was not found");
+        }
+
+        public bool ValidateAge(DateTime birthDate)
         {
             return true;
         }
+
+        public bool ValidateEmailAndNickName(string email, string nickname, int portalId)
+        {
+            if(_userRepository.EmailExists(email, portalId))
+            {
+                throw new ArgumentException("There is already a user with the email sent");
+            }
+            if (_userRepository.NickNameExists(nickname, portalId))
+            {
+                throw new ArgumentException("There is already a user with the nickname sent");
+            }
+            return true;
+        } 
 
     }
 }

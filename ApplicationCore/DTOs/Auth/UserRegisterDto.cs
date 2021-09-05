@@ -30,6 +30,7 @@ namespace ApplicationCore.DTOs.Auth
         [MaxLength(255, ErrorMessage = "Password cannot be longer than 255 characters")]
         public string Password { get; set; }
 
+        [DataType(DataType.Date)]
         [Required(ErrorMessage = "Birthdate is required")]
         public DateTime BirthDate { get; set; }
 
