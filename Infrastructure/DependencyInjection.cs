@@ -23,6 +23,7 @@ namespace Infrastructure
                     b => b.MigrationsAssembly(typeof(AppDbContext).Assembly.FullName)));
 
             services.AddScoped(typeof(IGenericRepositoryAsync<>), typeof(GenericRepository<>));
+            services.AddScoped<IPortalRepository, PortalRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IPostRepository, PostRepository>();
             services.AddScoped<ICommentRepository, CommentRepository>();

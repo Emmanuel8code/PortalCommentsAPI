@@ -55,7 +55,7 @@ namespace ApplicationCore.Services
             return comment.MapCommentToCommentResp();
         }
 
-        public async Task UpdateCommentContent(int commentId, string content, int userId)
+        public async Task<CommentResponseDto> UpdateCommentContent(int commentId, string content, int userId)
         {
             var comment = await _commentRepository.GetCommentById(commentId);
             if(comment == null || (comment.UserId != userId))
@@ -69,8 +69,9 @@ namespace ApplicationCore.Services
             }
 
             comment.Content = content;
-        
             await _commentRepository.UpdateAsync(comment);
+            
+            return comment.MapCommentToCommentResp();
         }
 
         public async Task SoftDeleteComment(int commentId)
@@ -80,8 +81,6 @@ namespace ApplicationCore.Services
             {
                 throw new EntityNotFoundException("Comment was not  found");
             }
-
-            //comment.DeletedAt = DateTime.Now; //FIJARSE QUE NO VA ESTA PARTE, ESTA EN EL DBCONTEXT
 
             await _commentRepository.SoftDelete(comment);
         }

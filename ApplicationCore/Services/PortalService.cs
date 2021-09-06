@@ -11,15 +11,15 @@ namespace ApplicationCore.Services
 {
     public class PortalService : IPortalService
     {
-        private readonly IGenericRepositoryAsync<Portal> _portalRepository;
-        public PortalService(IGenericRepositoryAsync<Portal> portalRepository)
+        private readonly IPortalRepository _portalRepository;
+        public PortalService(IPortalRepository portalRepository)
         {
             _portalRepository = portalRepository;
         }
 
         public Task<bool> IsPortalLegalAgeRequired(int portalId)
         {
-            throw new NotImplementedException();
+            return _portalRepository.IsLegalAgeRequired(portalId);
         }
 
         public bool PortalExists(int portalId)

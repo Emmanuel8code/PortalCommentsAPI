@@ -157,8 +157,8 @@ namespace WebAPI.Controllers
             try
             {
                 int userId = int.Parse(HttpContext.User.Claims.FirstOrDefault(c => c.Type == "UserId")?.Value);
-                await _commentService.UpdateCommentContent(commentId, content, userId);
-                return NoContent();
+                var comment = await _commentService.UpdateCommentContent(commentId, content, userId);
+                return Ok(comment);
             }
             catch (EntityNotFoundException e)
             {

@@ -14,7 +14,7 @@ namespace ApplicationCore.Interfaces.IServices
         Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByPostAsync(int postId);
         Task<IReadOnlyCollection<CommentResponseDto>> GetCommentsByWordAsync(string search, int portalId);
         Task<CommentResponseDto> GetCommentByIdAsync(int commentId);
-        Task UpdateCommentContent(int commentId, string content, int userId);
+        Task<CommentResponseDto> UpdateCommentContent(int commentId, string content, int userId);
         Task SoftDeleteComment(int commentId);
     }
 }

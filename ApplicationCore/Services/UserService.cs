@@ -45,15 +45,14 @@ namespace ApplicationCore.Services
 
             ValidateEmailAndNickName(userRegister.Email, userRegister.NickName, portalId);
 
-            //TERMINAR ESTE METODO
-            //bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(portalId);
-            //if (IsLegalAgeRequired)
-            //{
-            //    if (!(ValidateAge(userRegister.BirthDate)))
-            //    {
-            //        throw new AgeNotAllowedException("Age not allowed");
-            //    }
-            //}
+            bool IsLegalAgeRequired = await _portalService.IsPortalLegalAgeRequired(portalId);
+            if (IsLegalAgeRequired)
+            {
+                if (!(ValidateAge(userRegister.BirthDate)))
+                {
+                    throw new AgeNotAllowedException("Age not allowed");
+                }
+            }
 
             userRegister.Password = _passwordService.Hash(userRegister.Password);
 
@@ -87,7 +86,7 @@ namespace ApplicationCore.Services
             User user;
             if (permanent)
             {
-                user = await _userRepository.GetUserByPortalId(userId, portalId, false);
+                user = await _userRepository.GetUserBySpec(userId, portalId, false);
                 if (user != null)
                 {
                     await _userRepository.DeleteAsync(user);
@@ -96,7 +95,7 @@ namespace ApplicationCore.Services
             }
             else
             {
-                user = await _userRepository.GetUserByPortalId(userId, portalId);
+                user = await _userRepository.GetUserBySpec(userId, portalId);
                 if (user != null)
                 {
                     await _userRepository.SoftDelete(user);
@@ -109,6 +108,24 @@ namespace ApplicationCore.Services
 
         public bool ValidateAge(DateTime birthDate)
         {
+            var currentDate = DateTime.Today;
+            if (birthDate > currentDate)
+            {
+                throw new ArgumentException("Invalid birthDate");
+            }
+           
+            int edad = currentDate.Year - birthDate.Year;
+
+            if (birthDate.Month > currentDate.Month)
+            {
+                --edad;
+            }
+
+            if(edad < 18)
+            {
+                return false;
+            }
+            
             return true;
         }
 

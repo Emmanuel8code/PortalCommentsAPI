@@ -29,7 +29,7 @@ namespace Infrastructure.Data.Repositories
                           select c).FirstOrDefaultAsync();
         }
 
-        public async Task<User> GetUserByPortalId(int userId, int portalId, bool deleteNull = true)
+        public async Task<User> GetUserBySpec(int userId, int portalId, bool deleteNull = true)
         {
             var queryable = _dbContext.Users.AsQueryable();
 

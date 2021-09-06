@@ -58,10 +58,10 @@ namespace WebAPI.Controllers
             {
                 return this.Problem(e.Message, statusCode: 403);
             }
-            catch (Exception e)
-            {
-                return StatusCode(500, e.Message);
-            }
+            //catch (Exception e)
+            //{
+            //    return StatusCode(500, e.Message);
+            //}
         }
 
         // POST api/<PortalsController>/{id}/login
@@ -70,7 +70,7 @@ namespace WebAPI.Controllers
         /// </summary>
         /// <param name="portalId">A intenger number that identifies a Portal.</param>
         /// <param name="userLoginDto">A type of UserLoginDto object.</param>
-        [ProducesResponseType(200)]
+        [ProducesResponseType(typeof(AuthResponseDto), 200)]
         [ProducesResponseType(typeof(ProblemDetails), 400)]
         [ProducesResponseType(typeof(ProblemDetails), 401)]
         [HttpPost("/Portals/{portalId}/login")]
@@ -80,7 +80,13 @@ namespace WebAPI.Controllers
             {
                 var user = await _userService.Login(userLoginDto, portalId);
                 var token = await _tokenService.GetTokenAsync(user.Id, _configuration.GetValue<string>("SecretKey"));
-                return Ok(token);
+                var response = new AuthResponseDto()
+                {
+                    Nickname = user.NickName,
+                    Email = user.Email,
+                    Token = token
+                };
+                return Ok(response);
             }
             catch (InvalidOperationException e)
             {
